@@ -15,11 +15,7 @@
  */
 class Solution {
     public int maxDepth(TreeNode root) {
-        return find(root);
-    }
-
-    public static int find(TreeNode root){
         if(root==null)return 0;
-        return Math.max(find(root.left),find(root.right))+1;
+        return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
     }
 }
