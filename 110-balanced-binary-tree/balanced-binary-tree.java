@@ -24,16 +24,14 @@ class Solution {
         pair(){}
     }
     public boolean isBalanced(TreeNode root) {
-        return find(root).is;
+        return find(root)!=-1;
     }
 
-    public pair find(TreeNode root){
-        if(root==null)return new pair(0,true);
-        pair l=find(root.left);
-        pair r=find(root.right);
-        pair p=new pair();
-        p.h=Math.max(l.h,r.h)+1;
-        p.is=l.is && r.is && Math.abs(l.h-r.h)<=1;
-        return p;
+    public int find(TreeNode root){
+        if(root==null)return 0;
+        int l=find(root.left);
+        int r=find(root.right);
+        if(Math.abs(l-r)>1 || l==-1 || r==-1)return -1;
+        return Math.max(l,r)+1;
     }
 }
