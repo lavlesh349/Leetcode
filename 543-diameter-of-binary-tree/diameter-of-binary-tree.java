@@ -15,19 +15,17 @@
  */
 class Solution {
     public int diameterOfBinaryTree(TreeNode root) {
-        return find(root);
+        int[] ans={0};
+        find(root,ans);
+        return ans[0];
     }
 
-    public int find(TreeNode root){
-        if(root==null)return 0;
-        int l=find(root.left);
-        int r=find(root.right);
-        int c=height(root.left)+height(root.right)+2;
-        return Math.max(l,Math.max(c,r));
-    }
-
-    public int height(TreeNode root){
+    public int find(TreeNode root,int[] ans){
         if(root==null)return -1;
-        return Math.max(height(root.left),height(root.right))+1;
+        int l=find(root.left,ans);
+        int r=find(root.right,ans);
+        int c=l+r+2;
+        ans[0]=Math.max(ans[0],c);
+        return Math.max(l,r)+1;
     }
 }
