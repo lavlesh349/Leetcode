@@ -13,50 +13,53 @@
  *     }
  * }
  */
+
+
 class Solution {
-    class pair{
-        TreeNode node;
-        int idx;
-        int level;
-        pair(TreeNode node,int idx,int level){
-            this.node=node;
-            this.idx=idx;
-            this.level=level;
-        }
-        pair(){}
-    }
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        TreeMap<Integer,TreeMap<Integer,PriorityQueue<Integer>>> map=new TreeMap<>();
-        Queue<pair> q=new LinkedList<>();
-        if(root!=null){
-            q.add(new pair(root,0,0));
-        }
-        while(!q.isEmpty()){
-            pair rv=q.poll();
-            if(!map.containsKey(rv.idx)){
-                map.put(rv.idx,new TreeMap<>());
-            }
-            if(!map.get(rv.idx).containsKey(rv.level)){
-                map.get(rv.idx).put(rv.level,new PriorityQueue<>());
-            }
-            map.get(rv.idx).get(rv.level).add(rv.node.val);
-            if(rv.node.left!=null){
-                q.add(new pair(rv.node.left,rv.idx-1,rv.level+1));
-            }
-            if(rv.node.right!=null){
-                q.add(new pair(rv.node.right,rv.idx+1,rv.level+1));
-            }
-        }
-        List<List<Integer>> ans=new ArrayList<>();
-        for(int key:map.keySet()){
-            List<Integer> ll=new ArrayList<>();
-            for(int key2:map.get(key).keySet()){
-                while(!map.get(key).get(key2).isEmpty()){
-                    ll.add(map.get(key).get(key2).poll());
+        //column axis vs (row level vs priority queue)  
+        TreeMap<Integer, TreeMap<Integer, PriorityQueue<Integer>>> tm = new TreeMap<>();
+        helper(root, tm, 0, 0);
+
+        List<List<Integer>> ans = new ArrayList<>();
+
+        for (Integer xasis : tm.keySet()) {
+            List<Integer> row = new ArrayList<>();
+
+            TreeMap<Integer, PriorityQueue<Integer>> t = tm.get(xasis);
+            for (Integer level : t.keySet()) {
+                PriorityQueue<Integer> pq = t.get(level);
+                while (!pq.isEmpty()) {
+                    row.add(pq.poll());
                 }
             }
-            ans.add(new ArrayList<>(ll));
+
+            ans.add(row);
         }
+
         return ans;
+
+    }
+
+    public void helper(TreeNode root, TreeMap<Integer, TreeMap<Integer, PriorityQueue<Integer>>> tm, int level,
+            int verticalLevel) {
+        if (root == null)
+            return;
+        if (!tm.containsKey(verticalLevel)) {
+            tm.put(verticalLevel, new TreeMap<Integer, PriorityQueue<Integer>>());
+
+        }
+
+        if (!tm.get(verticalLevel).containsKey(level)) {
+            PriorityQueue<Integer> pq = new PriorityQueue<>();
+            tm.get(verticalLevel).put(level, pq);
+        }
+
+         PriorityQueue<Integer> pq = tm.get(verticalLevel).get(level);
+        pq.offer(root.val);
+
+        helper(root.left, tm, level + 1, verticalLevel - 1);
+        helper(root.right, tm, level + 1, verticalLevel + 1);
+
     }
 }
