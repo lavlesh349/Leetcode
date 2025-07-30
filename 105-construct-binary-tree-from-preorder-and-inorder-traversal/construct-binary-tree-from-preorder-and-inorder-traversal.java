@@ -16,23 +16,24 @@
 class Solution {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         int n=preorder.length-1;
-        return construct(preorder,inorder,0,n,0,n);
+        return construct(preorder,inorder,0,n);
     }
-
-    public TreeNode construct(int[] pre,int[] in,int ps,int pe,int is,int ie){
-        if(ps>pe || is>ie){
+    int p=0;
+    public TreeNode construct(int[] pre,int[] in,int is,int ie){
+        if(is>ie){
             return null;
         }
-        TreeNode root=new TreeNode(pre[ps]);
+        TreeNode root=new TreeNode(pre[p]);
         int idx=is;
         while(idx<=ie){
-            if(in[idx]==pre[ps]){
+            if(in[idx]==pre[p]){
                 break;
             }
             idx++;
         }
-        root.left=construct(pre,in,ps+1,ps+idx-is,is,idx-1);
-        root.right=construct(pre,in,ps-is+idx+1,pe,idx+1,ie);
+        p++;
+        root.left=construct(pre,in,is,idx-1);
+        root.right=construct(pre,in,idx+1,ie);
         return root;
     }
 }
