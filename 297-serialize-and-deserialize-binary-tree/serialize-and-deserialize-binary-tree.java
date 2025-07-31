@@ -11,23 +11,28 @@ public class Codec {
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
+        return convert(root);
+    }
+
+    public String convert(TreeNode root){
         if(root==null){
             return "";
         }
-        StringBuilder str=new StringBuilder();
-        convert(root,str);
-        return str.toString().substring(1);
-    }
-
-    public void convert(TreeNode root,StringBuilder ll){
-        if(root==null){
-            return;
+        StringBuilder ll=new StringBuilder();
+        ll.append(String.valueOf(root.val));
+        if(root.left==null){
+            ll.append(" False");
         }
-        ll.append(" "+String.valueOf(root.val));
-        ll.append(" "+(root.left==null?"False":"True"));
-        convert(root.left,ll);
-        ll.append(" "+(root.right==null?"False":"True"));
-        convert(root.right,ll);
+        else{
+            ll.append(" True "+convert(root.left));
+        }
+        if(root.right==null){
+            ll.append(" False");
+        }
+        else{
+            ll.append(" True "+convert(root.right));
+        }
+        return ll.toString();
     }
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
@@ -35,7 +40,7 @@ public class Codec {
             return null;
         }
         String[] arr=data.split(" ");
-        System.out.println(Arrays.toString(arr));
+        // System.out.println(Arrays.toString(arr));
         return construct(arr,new int[]{0});
     }
 
