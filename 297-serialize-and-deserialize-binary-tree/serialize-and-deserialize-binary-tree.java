@@ -14,23 +14,19 @@ public class Codec {
         if(root==null){
             return "";
         }
-        List<String> ll=new ArrayList<>();
-        convert(root,ll);
         StringBuilder str=new StringBuilder();
-        for(String s:ll){
-            str.append(" "+s);
-        }
+        convert(root,str);
         return str.toString().substring(1);
     }
 
-    public void convert(TreeNode root,List<String> ll){
+    public void convert(TreeNode root,StringBuilder ll){
         if(root==null){
             return;
         }
-        ll.add(String.valueOf(root.val));
-        ll.add(root.left==null?"False":"True");
+        ll.append(" "+String.valueOf(root.val));
+        ll.append(" "+(root.left==null?"False":"True"));
         convert(root.left,ll);
-        ll.add(root.right==null?"False":"True");
+        ll.append(" "+(root.right==null?"False":"True"));
         convert(root.right,ll);
     }
     // Decodes your encoded data to tree.
@@ -39,13 +35,13 @@ public class Codec {
             return null;
         }
         String[] arr=data.split(" ");
+        System.out.println(Arrays.toString(arr));
         return construct(arr,new int[]{0});
     }
 
     public TreeNode construct(String[] arr,int[] idx){
         if(idx[0]>=arr.length)return null;
-        TreeNode root=new TreeNode(Integer.parseInt(arr[idx[0]]));
-        idx[0]++;
+        TreeNode root=new TreeNode(Integer.parseInt(arr[idx[0]++]));
         if(arr[idx[0]++].equals("True")){
             root.left=construct(arr,idx);
         }
