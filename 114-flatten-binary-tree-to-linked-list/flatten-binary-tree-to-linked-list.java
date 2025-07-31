@@ -14,23 +14,13 @@
  * }
  */
 class Solution {
+    TreeNode lastprocesednode=null;
     public void flatten(TreeNode root) {
-        helper(root);
-    }
-
-    public TreeNode helper(TreeNode root){
-        if(root==null){
-            return null;
-        }
-        TreeNode l=helper(root.left);
-        TreeNode r=helper(root.right);
+        if(root==null)return;
+        flatten(root.right);
+        flatten(root.left);
         root.left=null;
-        root.right=l;
-        l=root;
-        while(l.right!=null){
-            l=l.right;
-        }
-        l.right=r;
-        return root;
+        root.right=lastprocesednode;
+        lastprocesednode=root;
     }
 }
