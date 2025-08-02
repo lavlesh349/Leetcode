@@ -15,23 +15,19 @@
  */
 class BSTIterator {
 
+    TreeNode head=null;
+
     public BSTIterator(TreeNode root) {
         construct(root);
     }
-    TreeNode head=null;
-    TreeNode prev=null;
+
     public void construct(TreeNode root){
         if(root==null)return;
-        construct(root.left);
-        if(head==null){
-            head=root;
-        }
-        else{
-            prev.right=root;
-        }
-        prev=root;
-        root.left=null;
         construct(root.right);
+        root.right=head;
+        head=root;
+        construct(root.left);
+        root.left=null;
     }
    public int next() {
         int temp=head.val;
