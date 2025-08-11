@@ -9,7 +9,7 @@ Each file includes the **problem statement** and my **solution code**, written f
 - **Languages Used:** Java
 - Each file contains:
   - The original problem statement from LeetCode
-  - My approach/logic explanation (if needed)
+  - My approach/logic
   - The solution code
 - No folder structure — solutions are stored directly in the root directory for quick access.
 
